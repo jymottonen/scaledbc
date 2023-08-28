@@ -1,0 +1,21 @@
+Package: scaledbc
+Type: Package
+Title: Application of Box-Cox transformation with flexmix
+Version: 0.1.0
+Authors@R: c(
+    person("Tapio", "Nummi", email = "tapio.nummi@tuni.fi", role = c("aut")),
+    person("Pasi", "Väkeväinen", email = "pasi.vak@gmail.com", role = c("aut")),
+    person("Jyrki", "Möttönen", email = "jyrki.mottonen@helsinki.fi", role = c("aut","cre"),
+           comment = c(ORCID = "0000-0002-6270-2556"))
+    )
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.2.3
+Imports: 
+    flexmix,
+    lattice
+Depends: 
+    R (>= 2.10)
