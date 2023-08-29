@@ -1,27 +1,28 @@
-#' Application of Box-Cox transformation with flexmix
+#' Brute-force application of scaled Box-Cox transformation in flexmix
 #'
 #' \code{stepmixl} is used to ....
 #'
-#' @param y outcome vector
-#' @param x predictor(s) as a vector or a matrix.
-#' @param id identifier, unique to each subject.
-#' @param K number of mixture components, single value or a vector.
-#' @param seed RNG seed for reproducibility.
-#' @param notrans if TRUE, analysis is done without transformation for comparison (TRUE by default)
+#' @param y response variable (in long format)
+#' @param x predictor(s) as a vector or a matrix (in long format)
+#' @param id identifier unique to each subject (in long format)
+#' @param lambdas sequence of lambda calculation points
+#' @param K number of mixture components, single value or a vector
+#' @param classes known classes of the subjects for computing cluster purity (optional)
 #' @details
 #' Here are the details of the function...
 #' @return A list containing the following components:
 #' \describe{
-#' \item{models}{maximum likelihood solutions for different numbers of components. The numbers of components are given in K.}
-#' \item{nt}{maximum likelihood solutions for different numbers of components without transformation, if notrans=TRUE}
 #' \item{K}{number of mixture components}
-#' \item{conv}{convergence of the stepFlexmix function. Equals 1 if converged.}
-#' \item{iter}{number of iterations until convergence}
-#' \item{lambda}{value of lambda}
-#' \item{logL}{log-likelihood}
-#' \item{AIC}{Akaike information criterion}
-#' \item{BIC}{Bayesian information criterion}
-#' \item{ICL}{Integrated completed likelihoo}
+#' \item{lambda}{best value of lambda found}
+#' \item{AIC}{Akaike information criterion (lower is better)}
+#' \item{BIC}{Bayesian information criterion (lower is better)}
+#' \item{ICL}{Integrated completed likelihood (lower is better)}
+#' \item{purity}{cluster purity, higher is better (if classes are known)}
+#' \item{pass}{proportion of clusters that pass Shapiro test for normality of residuals at alpha=0.05}
+#' \item{conv}{1 if algorithm converged before reaching maximum number of iterations, 0 otherwise}
+#' \item{iter}{number of iterations}
+#' \item{logL}{log-likelihood of model}
+#' \item{models}{flexmix model objects fitted with best lambda value for each K}
 #' }
 #' @references
 #' ...
@@ -31,76 +32,39 @@
 #' \dontrun{
 #' library(scaledbc)
 #' summary(ex)
-#' res <- stepmixl(ex$y,ex$x,ex$id,K=1:5,seed=1)
+#' res <- stepmixl(ex.long$y,ex.long$x,ex.long$id,lambdas=seq(-2,2,0.05),K=1:5)
 #' plot(res)
 #' summary(res)
 #' summary(res,digits=7)
 #' }
 #' @export
-stepmixl <- function(y, x, id, K, seed=.Random.seed, notrans=TRUE){
-  #-----------------------------------------------
-  # Scaled power transformation
-  tran <- function(y, lambda){
-    gm <- exp(mean(log(y)))
-    if (lambda==0){ yt <- gm*log(y) }
-    else{ yt <- ((y^(lambda))-1)/(lambda*(gm^(lambda-1))) }
-    yt
-  }
-  #-----------------------------------------------
+stepmixl <- function(y, x, id, lambdas, K, classes){
   require(flexmix)
-  if(any(y <= 0, na.rm=TRUE)){
-    stop("All values of the response variable y must be positive ",
-          "in the version of the transformation applied here.")
-  }
-  res <- matrix(nr=0, nc=8)
+  nlambda <- length(lambdas)
   data <- list(y=y, x=x, id=id)
+  res <- matrix(nr=0, nc=10)
   models <- c()
-  set.seed(seed)
+
   startTime <- Sys.time()
   for(k in K){
-    # The method first checks 11 values of lambda
-    # in range [-5,5] with interval 1.
-    # The lambda with highest likelihood is selected
-    # as a mid-point for the next iteration.
-    # On the second iteration the range is of length 2
-    # and the interval between values is 0.2.
-    # The final iteration is done similarly with
-    # a range of length 0.4 and interval 0.04.
-    lambda <- seq(-5, 5, 1)
     likelihood <- c()
-    for(l in 1:11){
-      likelihood <- c(likelihood,
-                        logLik(stepFlexmix(tran(y, lambda[l])~x|id,
-                        k=k, nrep=10, verbose=F, data=data)))
+    for(l in 1:nlambda){
+      likelihood <- c(likelihood, logLik(stepFlexmix(tran(y, lambdas[l])~x|id, data=data, k=k, nrep=10, verbose=F)))
     }
-    mid <- lambda[which.max(likelihood)]
-
-    lambda <- round(seq(mid-1, mid+1, 0.2),2)
-    likelihood <- c()
-    for(l in 1:11){
-      likelihood <- c(likelihood,
-                        logLik(stepFlexmix(tran(y, lambda[l])~x|id,
-                        k=k, nrep=10, verbose=F, data=data)))
+    best_lambda <- lambdas[which.max(likelihood)]
+    best <- stepFlexmix(tran(y, best_lambda)~x|id, data=data, k=k, nrep=10, verbose=F)
+    if(hasArg(classes)){
+      pur <- purity(classes=classes, clusters=best@cluster[1:length(unique(id))])
     }
-    mid <- lambda[which.max(likelihood)]
-
-    lambda <- round(seq(mid-0.2, mid+0.2, 0.04),3)
-    likelihood <- c()
-    for(l in 1:11){
-      likelihood <- c(likelihood,
-                        logLik(stepFlexmix(tran(y, lambda[l])~x|id,
-                        k=k, nrep=10, verbose=F, data=data)))
+    else{
+      pur <- NA
     }
-    final_lambda <- lambda[which.max(likelihood)]
-
-    best <- stepFlexmix(tran(y, final_lambda)~x|id,
-                        k=k, nrep=10, verbose=F, data=data)
-    conv <- best@converged
+    pass <- test.resid(best, tran(y, best_lambda))
+    conv <- as.logical(best@converged)
     iter <- best@iter
     logL <- best@logLik
 
-    res <- rbind(res, c(k, conv, iter, final_lambda, logL,
-                        AIC(best), BIC(best), ICL(best)))
+    res <- rbind(res, c(k, best_lambda, AIC(best), BIC(best), ICL(best), pur, pass, conv, iter, logL))
     models <- c(models, best)
     nowTime <- Sys.time()
     print(paste("K=",k))
@@ -108,18 +72,11 @@ stepmixl <- function(y, x, id, K, seed=.Random.seed, notrans=TRUE){
     startTime<-nowTime
   }
   res <- as.data.frame(res)
-  names(res) <- c("K", "conv", "iter", "lambda", "logL",
-                  "AIC", "BIC", "ICL")
-  nt <- NA
-  if(notrans){
-    nt <- stepFlexmix(y~x|id, k=K, nrep=10, verbose=F, data=data)
-  }
-
- fit<-list(models=models, nt=nt, K=res$K, conv=res$conv,
-           iter=res$iter, lambda=res$lambda, logL=res$logL,
-           AIC=res$AIC, BIC=res$BIC, ICL=res$ICL )
- class(fit) <- "stepmixl"
- return(fit)
+  names(res) <- c("K", "lambda", "AIC", "BIC", "ICL", "purity", "pass", "conv", "iter", "logL")
+  fit<-list(K=res$K,lambda=res$lambda,AIC=res$AIC,BIC=res$BIC,ICL=res$ICL,purity=res$purity,
+            pass=res$pass,conv=res$conv,iter=res$iter,logL=res$logL,models=models)
+  class(fit) <- "stepmixl"
+  return(fit)
 }
 
 
