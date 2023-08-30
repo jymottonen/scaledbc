@@ -7,6 +7,7 @@
 #' @param id identifier unique to each subject (in long format)
 #' @param K number of mixture components, single value or a vector
 #' @param classes known classes of the subjects for computing cluster purity (optional)
+#' @param data an optional data frame containing the variables y, x and id.
 #' @details
 #' The method first checks 11 values of lambda
 #' in range [-5,5] with interval 1.
@@ -37,18 +38,19 @@
 #' \dontrun{
 #' library(scaledbc)
 #' summary(ex)
-#' res <- stepmixl_opt(ex.long$y,ex.long$x,ex.long$id,K=1:5)
+#' res <- stepmixl_opt(y,x,id,K=1:5,data=ex.long)
 #' plot(res)
 #' summary(res)
 #' summary(res,digits=7)
 #' }
 #' @export
-stepmixl_opt <- function(y, x, id, K, classes){
+stepmixl_opt <- function(y, x, id, K, classes, data){
   require(flexmix)
+  if(hasArg(data)){y<-data$y; x<-data$x; id<-data$id}
+  else data<-data.frame(y=y,x=x,id=id)
   res <- matrix(nr=0, nc=10)
   data <- list(y=y, x=x, id=id)
   models <- c()
-
   startTime <- Sys.time()
   for(k in K){
     lambda <- seq(-5, 5, 1)

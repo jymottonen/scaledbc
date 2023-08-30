@@ -4,20 +4,22 @@
 \alias{stepmixl}
 \title{Brute-force application of scaled Box-Cox transformation in flexmix}
 \usage{
-stepmixl(y, x, id, lambdas, K, classes)
+stepmixl(y, x, id, lambdas, K, classes, data)
 }
 \arguments{
-\item{y}{response variable (in long format)}
+\item{y}{response variable (in long format).}
 
-\item{x}{predictor(s) as a vector or a matrix (in long format)}
+\item{x}{predictor(s) as a vector or a matrix (in long format).}
 
-\item{id}{identifier unique to each subject (in long format)}
+\item{id}{identifier unique to each subject (in long format).}
 
-\item{lambdas}{sequence of lambda calculation points}
+\item{lambdas}{sequence of lambda calculation points.}
 
-\item{K}{number of mixture components, single value or a vector}
+\item{K}{number of mixture components, single value or a vector.}
 
-\item{classes}{known classes of the subjects for computing cluster purity (optional)}
+\item{classes}{known classes of the subjects for computing cluster purity (optional).}
+
+\item{data}{an optional data frame containing the variables y, x and id.}
 }
 \value{
 A list containing the following components:
@@ -45,7 +47,7 @@ Here are the details of the function...
 \dontrun{
 library(scaledbc)
 summary(ex)
-res <- stepmixl(ex.long$y,ex.long$x,ex.long$id,lambdas=seq(-2,2,0.05),K=1:5)
+res <- stepmixl(y,x,id,lambdas=seq(-2,2,0.05),K=1:5,data=ex.long)
 plot(res)
 summary(res)
 summary(res,digits=7)
