@@ -1,6 +1,6 @@
 #' Mixture model estimation without transformation in flexmix
 #'
-#' \code{stepmixl_orig} is used to ....
+#' \code{stepmixl_orig2} is used to ....
 #'
 #' @param y response variable (in long format)
 #' @param x predictor(s) as a vector or a matrix (in long format)
@@ -31,22 +31,25 @@
 #' \dontrun{
 #' library(scaledbc)
 #' summary(ex)
-#' res <- stepmixl_orig(y,x,id,K=1:5,data=ex.long)
+#' res <- stepmixl_orig2(y,x,id,K=1:5,data=ex.long)
 #' plot(res)
 #' summary(res)
 #' summary(res,digits=7)
 #' }
 #' @export
-stepmixl_orig <- function(y, x, id, K, classes, data){
+stepmixl_orig2 <- function(y,x,id,K, classes, data){
   require(flexmix)
   if(hasArg(data)){y<-data$y; x<-data$x; id<-data$id}
-  else data<-data.frame(y=y,x=x,id=id)
+  x<-as.data.frame(x)
+  colnames(x)<-paste0("x",1:ncol(x))
+  data<-cbind(y,x,id)
+  (fmla <- as.formula(paste("y ~ ", paste(colnames(x), collapse= "+")," | id")))
+  print(fmla)
   res <- matrix(nr=0, nc=9)
   models <- c()
   startTime <- Sys.time()
-
   for(k in K){
-    best <- stepFlexmix(y~x|id, data=data, k=k, nrep=10, verbose=F)
+    best <- stepFlexmix(fmla, data=data, k=k, nrep=10, verbose=F)
     if(hasArg(classes)){
       pur <- purity(classes=classes, clusters=best@cluster[1:length(unique(id))])
     }

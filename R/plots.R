@@ -29,7 +29,7 @@ plot.stepmixl<-function(x, ...)
 #' plot.stepmixl_orig is used to plot the results of
 #' function stepmixl_orig.
 #'
-#' @param x an object of class stepmixl.
+#' @param x an object of class stepmixl_orig.
 #' @details
 #' Here are the details of the function...
 #' @export

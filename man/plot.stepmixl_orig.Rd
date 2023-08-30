@@ -7,7 +7,7 @@
 \method{plot}{stepmixl_orig}(x, ...)
 }
 \arguments{
-\item{x}{an object of class stepmixl.}
+\item{x}{an object of class stepmixl_orig.}
 }
 \description{
 plot.stepmixl_orig is used to plot the results of
