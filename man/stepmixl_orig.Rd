@@ -17,10 +17,10 @@ stepmixl_orig(y, x, id, K, classes, data)
 
 \item{classes}{known classes of the subjects for computing cluster purity (optional)}
 
-\item{data}{an optional data frame containing the variables y, x and id.}
+\item{data}{a data frame containing the variables y, x and id (optional)}
 }
 \value{
-A list containing the following components:
+A list with objects:
 \describe{
 \item{K}{number of mixture components}
 \item{AIC}{Akaike information criterion (lower is better)}
@@ -43,7 +43,6 @@ Here are the details of the function...
 \examples{
 \dontrun{
 library(scaledbc)
-summary(ex)
 res <- stepmixl_orig(y,x,id,K=1:5,data=ex.long)
 plot(res)
 summary(res)
@@ -51,7 +50,20 @@ summary(res,digits=7)
 }
 }
 \references{
-...
+Grün, B.  and Leisch, F. (2023), \emph{flexmix: Flexible Mixture Modeling}. R package version 2.3-19,
+\url{https://CRAN.R-project.org/package=flexmix}.
+
+Leisch, F. (2004). FlexMix: A General Framework for Finite Mixture Models and Latent Class
+Regression in R. \emph{Journal of Statistical Software}, \strong{11}(8), 1-18,
+\url{https://doi.org/10.18637/jss.v011.i08}.
+
+Grün, B. and Leisch, F. (2007). Fitting Finite Mixtures of Generalized Linear Regressions in R,
+\emph{Computational Statistics & Data Analysis}, \strong{51}, 5247–5252,
+\url{https://doi.org/10.1016/j.csda.2006.08.014}.
+
+Grün, B. and Leisch, F. (2008). FlexMix Version 2: Finite Mixtures with Concomitant Variables
+and Varying and Constant Parameters. \emph{Journal of Statistical Software}, \strong{28}(4), 1-35,
+\url{https://doi.org/10.18637/jss.v028.i04}.
 }
 \seealso{
 ...

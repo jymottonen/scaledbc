@@ -11,7 +11,7 @@
 }
 \description{
 plot.stepmixl is used to plot the results of
-function stepmixl.
+an object of class stepmixl.
 }
 \details{
 Here are the details of the function...

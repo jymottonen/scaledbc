@@ -3,7 +3,7 @@
 \docType{data}
 \name{ex.long}
 \alias{ex.long}
-\title{Simulated data in long format}
+\title{A simulated data in long format}
 \format{
 A list with objects:
 \describe{
@@ -17,6 +17,6 @@ A list with objects:
 ex.long
 }
 \description{
-The simulated dataset  has n=100 longitudinal measurements of length p=10.
+A simulated dataset with n=100 longitudinal measurements of length p=10.
 }
 \keyword{datasets}

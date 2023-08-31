@@ -15,7 +15,7 @@
 }
 \description{
 summary.stepmixl is used to print the summary of
-stepmixl.
+an object of class stepmixl.
 }
 \details{
 Here are the details of the function...

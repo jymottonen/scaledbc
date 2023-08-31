@@ -7,10 +7,10 @@
 #' @param id identifier unique to each subject (in long format)
 #' @param K number of mixture components, single value or a vector
 #' @param classes known classes of the subjects for computing cluster purity (optional)
-#' @param data an optional data frame containing the variables y, x and id.
+#' @param data a data frame containing the variables y, x and id (optional)
 #' @details
 #' Here are the details of the function...
-#' @return A list containing the following components:
+#' @return A list with objects:
 #' \describe{
 #' \item{K}{number of mixture components}
 #' \item{AIC}{Akaike information criterion (lower is better)}
@@ -24,35 +24,46 @@
 #' \item{models}{flexmix model objects fitted with best lambda value for each K}
 #' }
 #' @references
-#' ...
+#' Grün, B.  and Leisch, F. (2023), \emph{flexmix: Flexible Mixture Modeling}. R package version 2.3-19,
+#' \url{https://CRAN.R-project.org/package=flexmix}.
+#'
+#' Leisch, F. (2004). FlexMix: A General Framework for Finite Mixture Models and Latent Class
+#' Regression in R. \emph{Journal of Statistical Software}, \strong{11}(8), 1-18,
+#' \url{https://doi.org/10.18637/jss.v011.i08}.
+#'
+#' Grün, B. and Leisch, F. (2007). Fitting Finite Mixtures of Generalized Linear Regressions in R,
+#' \emph{Computational Statistics & Data Analysis}, \strong{51}, 5247–5252,
+#' \url{https://doi.org/10.1016/j.csda.2006.08.014}.
+#'
+#' Grün, B. and Leisch, F. (2008). FlexMix Version 2: Finite Mixtures with Concomitant Variables
+#' and Varying and Constant Parameters. \emph{Journal of Statistical Software}, \strong{28}(4), 1-35,
+#' \url{https://doi.org/10.18637/jss.v028.i04}.
+#'
 #' @seealso
 #' ...
 #' @examples
 #' \dontrun{
 #' library(scaledbc)
-#' summary(ex)
 #' res <- stepmixl_orig(y,x,id,K=1:5,data=ex.long)
 #' plot(res)
 #' summary(res)
 #' summary(res,digits=7)
 #' }
 #' @export
-stepmixl_orig <- function(y, x, id, K, classes, data){
+stepmixl_orig <- function(y,x,id,K, classes, data){
   require(flexmix)
   if(hasArg(data)){y<-data$y; x<-data$x; id<-data$id}
-  else data<-data.frame(y=y,x=x,id=id)
+  x<-as.data.frame(x)
+  colnames(x)<-paste0("x",1:ncol(x))
+  data<-cbind(y,x,id)
+  (fmla <- as.formula(paste("y ~ ", paste(colnames(x), collapse= "+")," | id")))
   res <- matrix(nr=0, nc=9)
   models <- c()
   startTime <- Sys.time()
-
   for(k in K){
-    best <- stepFlexmix(y~x|id, data=data, k=k, nrep=10, verbose=F)
-    if(hasArg(classes)){
-      pur <- purity(classes=classes, clusters=best@cluster[1:length(unique(id))])
-    }
-    else{
-      pur <- NA
-    }
+    best <- stepFlexmix(fmla, data=data, k=k, nrep=10, verbose=F)
+    if(hasArg(classes)){pur <- purity(classes=classes, clusters=best@cluster[1:length(unique(id))])}
+    else{pur <- NA}
     pass <- test.resid(best, y)
     conv <- as.logical(best@converged)
     iter <- best@iter
@@ -65,11 +76,11 @@ stepmixl_orig <- function(y, x, id, K, classes, data){
     startTime<-nowTime
   }
   res <- as.data.frame(res)
-  names(res) <- c("K", "AIC", "BIC", "ICL", "purity", "pass", "conv", "iter", "logL")
-  fit<-list(K=res$K,AIC=res$AIC,BIC=res$BIC,ICL=res$ICL,purity=res$purity,
+  res$lambda<-NA
+  names(res) <- c("K", "AIC", "BIC", "ICL", "purity", "pass", "conv", "iter", "logL","lambda")
+  fit<-list(K=res$K,lambda=res$lambda,AIC=res$AIC,BIC=res$BIC,ICL=res$ICL,purity=res$purity,
             pass=res$pass,conv=res$conv,iter=res$iter,logL=res$logL,models=models)
-  class(fit) <- "stepmixl_orig"
+  class(fit) <- "stepmixl"
   return(fit)
 }
-
 
