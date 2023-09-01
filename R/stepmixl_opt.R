@@ -57,7 +57,6 @@
 #' @export
 #' @import flexmix
 stepmixl_opt <- function(y, x, id, K, classes, data){
-  #require(flexmix)
   if(hasArg(data)){y<-data$y; x<-data$x; id<-data$id}
   x<-as.data.frame(x)
   colnames(x)<-paste0("x",1:ncol(x))

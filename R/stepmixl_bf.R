@@ -54,7 +54,6 @@
 #' @export
 #' @import flexmix
 stepmixl_bf <- function(y, x, id, lambdas, K, classes, data){
-  #require(flexmix)
   nlambda <- length(lambdas)
   if(hasArg(data)){y<-data$y; x<-data$x; id<-data$id}
   x<-as.data.frame(x)
