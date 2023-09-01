@@ -4,7 +4,7 @@
 \alias{plot.stepmixl}
 \title{plot.stepmixl}
 \usage{
-\method{plot}{stepmixl}(x, ...)
+plot.stepmixl(x, ...)
 }
 \arguments{
 \item{x}{an object of class stepmixl.}
