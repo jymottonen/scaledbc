@@ -8,8 +8,7 @@ Authors@R: c(
     person("Jyrki", "Möttönen", email = "jyrki.mottonen@helsinki.fi", role = c("aut","cre"),
            comment = c(ORCID = "0000-0002-6270-2556"))
     )
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Implementation of the scaled Box-Cox transformation in R.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

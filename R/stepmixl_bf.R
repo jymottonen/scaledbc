@@ -11,7 +11,8 @@
 #' @param data a data frame containing the variables y, x and id (optional)
 #'
 #' @details
-#' Here are the details of the function...
+#' Implements a brute-force method of the transformation, performing a grid-search of all \eqn{\lambda}
+#' values entered by the user as a parameter.
 #' @return A list with objects:
 #' \describe{
 #' \item{K}{number of mixture components}
@@ -42,8 +43,6 @@
 #' and Varying and Constant Parameters. \emph{Journal of Statistical Software}, \strong{28}(4), 1-35,
 #' \url{https://doi.org/10.18637/jss.v028.i04}.
 #'
-#' @seealso
-#' ...
 #' @examples
 #' \dontrun{
 #' library(scaledbc)
@@ -53,8 +52,9 @@
 #' summary(res,digits=7)
 #' }
 #' @export
+#' @import flexmix
 stepmixl_bf <- function(y, x, id, lambdas, K, classes, data){
-  require(flexmix)
+  #require(flexmix)
   nlambda <- length(lambdas)
   if(hasArg(data)){y<-data$y; x<-data$x; id<-data$id}
   x<-as.data.frame(x)

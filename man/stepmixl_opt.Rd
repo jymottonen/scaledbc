@@ -72,6 +72,3 @@ Grün, B. and Leisch, F. (2008). FlexMix Version 2: Finite Mixtures with Concomi
 and Varying and Constant Parameters. \emph{Journal of Statistical Software}, \strong{28}(4), 1-35,
 \url{https://doi.org/10.18637/jss.v028.i04}.
 }
-\seealso{
-...
-}

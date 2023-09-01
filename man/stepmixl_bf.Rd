@@ -41,7 +41,8 @@ A list with objects:
 \code{stepmixl_bf} is used to ....
 }
 \details{
-Here are the details of the function...
+Implements a brute-force method of the transformation, performing a grid-search of all \eqn{\lambda}
+values entered by the user as a parameter.
 }
 \examples{
 \dontrun{
@@ -67,7 +68,4 @@ Grün, B. and Leisch, F. (2007). Fitting Finite Mixtures of Generalized Linear R
 Grün, B. and Leisch, F. (2008). FlexMix Version 2: Finite Mixtures with Concomitant Variables
 and Varying and Constant Parameters. \emph{Journal of Statistical Software}, \strong{28}(4), 1-35,
 \url{https://doi.org/10.18637/jss.v028.i04}.
-}
-\seealso{
-...
 }

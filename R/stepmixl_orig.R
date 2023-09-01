@@ -9,7 +9,7 @@
 #' @param classes known classes of the subjects for computing cluster purity (optional)
 #' @param data a data frame containing the variables y, x and id (optional)
 #' @details
-#' Here are the details of the function...
+#' Fits the model onto the original, untransformed data.
 #' @return A list with objects:
 #' \describe{
 #' \item{K}{number of mixture components}
@@ -39,8 +39,6 @@
 #' and Varying and Constant Parameters. \emph{Journal of Statistical Software}, \strong{28}(4), 1-35,
 #' \url{https://doi.org/10.18637/jss.v028.i04}.
 #'
-#' @seealso
-#' ...
 #' @examples
 #' \dontrun{
 #' library(scaledbc)
@@ -50,8 +48,9 @@
 #' summary(res,digits=7)
 #' }
 #' @export
+#' @import flexmix
 stepmixl_orig <- function(y,x,id,K, classes, data){
-  require(flexmix)
+  #require(flexmix)
   if(hasArg(data)){y<-data$y; x<-data$x; id<-data$id}
   x<-as.data.frame(x)
   colnames(x)<-paste0("x",1:ncol(x))

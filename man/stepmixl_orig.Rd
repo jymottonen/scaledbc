@@ -38,7 +38,7 @@ A list with objects:
 \code{stepmixl_orig} is used to ....
 }
 \details{
-Here are the details of the function...
+Fits the model onto the original, untransformed data.
 }
 \examples{
 \dontrun{
@@ -64,7 +64,4 @@ Grün, B. and Leisch, F. (2007). Fitting Finite Mixtures of Generalized Linear R
 Grün, B. and Leisch, F. (2008). FlexMix Version 2: Finite Mixtures with Concomitant Variables
 and Varying and Constant Parameters. \emph{Journal of Statistical Software}, \strong{28}(4), 1-35,
 \url{https://doi.org/10.18637/jss.v028.i04}.
-}
-\seealso{
-...
 }

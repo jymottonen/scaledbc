@@ -46,8 +46,6 @@
 #' and Varying and Constant Parameters. \emph{Journal of Statistical Software}, \strong{28}(4), 1-35,
 #' \url{https://doi.org/10.18637/jss.v028.i04}.
 #'
-#' @seealso
-#' ...
 #' @examples
 #' \dontrun{
 #' library(scaledbc)
@@ -57,8 +55,9 @@
 #' summary(res,digits=7)
 #' }
 #' @export
+#' @import flexmix
 stepmixl_opt <- function(y, x, id, K, classes, data){
-  require(flexmix)
+  #require(flexmix)
   if(hasArg(data)){y<-data$y; x<-data$x; id<-data$id}
   x<-as.data.frame(x)
   colnames(x)<-paste0("x",1:ncol(x))
