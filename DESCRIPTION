@@ -1,10 +1,11 @@
 Package: scaledbc
 Type: Package
-Title: Application of Box-Cox transformation with flexmix
+Title: Application of the scaled Box-Cox transformation with flexmix
 Version: 0.1.0
 Authors@R: c(
     person("Tapio", "Nummi", email = "tapio.nummi@tuni.fi", role = c("aut")),
-    person("Pasi", "Väkeväinen", email = "pasi.vak@gmail.com", role = c("aut")),
+    person("Pasi", "Väkeväinen", email = "pasi.vak@gmail.com", role = c("aut"), 
+           comment = c(ORCID = "0000-0002-2680-3501")),
     person("Jyrki", "Möttönen", email = "jyrki.mottonen@helsinki.fi", role = c("aut","cre"),
            comment = c(ORCID = "0000-0002-6270-2556"))
     )

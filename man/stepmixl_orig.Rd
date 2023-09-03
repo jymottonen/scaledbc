@@ -23,6 +23,8 @@ stepmixl_orig(y, x, id, K, classes, data)
 A list with objects:
 \describe{
 \item{K}{number of mixture components}
+\item{lambda}{is always NA. This return value is included to make this function compatible
+with functions stepmixl_bf and stepmixl_opt}
 \item{AIC}{Akaike information criterion (lower is better)}
 \item{BIC}{Bayesian information criterion (lower is better)}
 \item{ICL}{Integrated completed likelihood (lower is better)}
