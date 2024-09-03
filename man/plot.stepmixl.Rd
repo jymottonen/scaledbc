@@ -4,10 +4,12 @@
 \alias{plot.stepmixl}
 \title{plot.stepmixl}
 \usage{
-plot.stepmixl(x, ...)
+\method{plot}{stepmixl}(x, ...)
 }
 \arguments{
 \item{x}{an object of class stepmixl.}
+
+\item{...}{further arguments passed to or from other methods.}
 }
 \description{
 plot.stepmixl is used to plot the results of

@@ -54,15 +54,17 @@
 #' summary(res)
 #' summary(res,digits=7)
 #' }
+#' @importFrom flexmix stepFlexmix ICL logLik
+#' @import stats
+#' @import methods
 #' @export
-#' @import flexmix
 stepmixl_opt <- function(y, x, id, K, classes, data){
   if(hasArg(data)){y<-data$y; x<-data$x; id<-data$id}
   x<-as.data.frame(x)
   colnames(x)<-paste0("x",1:ncol(x))
   data<-cbind(y,x,id)
   (fmla <- as.formula(paste("tran(y, lambda[l]) ~ ", paste(colnames(x), collapse= "+")," | id")))
-  res <- matrix(nr=0, nc=10)
+  res <- matrix(nrow=0, ncol=10)
   models <- c()
   startTime <- Sys.time()
   for(k in K){

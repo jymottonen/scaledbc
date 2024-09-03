@@ -52,7 +52,10 @@
 #' summary(res,digits=7)
 #' }
 #' @export
-#' @import flexmix
+#' @importFrom flexmix stepFlexmix ICL logLik
+#' @import stats
+#' @import methods
+#' @importFrom graphics plot
 stepmixl_bf <- function(y, x, id, lambdas, K, classes, data){
   nlambda <- length(lambdas)
   if(hasArg(data)){y<-data$y; x<-data$x; id<-data$id}
@@ -61,7 +64,7 @@ stepmixl_bf <- function(y, x, id, lambdas, K, classes, data){
   data<-cbind(y,x,id)
   (fmla <- as.formula(paste("tran(y, lambdas[l]) ~ ", paste(colnames(x), collapse= "+")," | id")))
   (fmlb <- as.formula(paste("tran(y, best_lambda) ~ ", paste(colnames(x), collapse= "+")," | id")))
-  res <- matrix(nr=0, nc=10)
+  res <- matrix(nrow=0, ncol=10)
   models <- c()
   startTime <- Sys.time()
   for(k in K){

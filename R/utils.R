@@ -17,7 +17,7 @@
 #' \item{2}{data in wide format (mostly for plotting purposes)}
 #' \item{3}{classes}
 #' }
-#' @noRd
+#' @importFrom stats rnorm
 #' @export
 getSample <- function(n=100, p=5, a=1, b=0.3, c=0.3, pi=c(0.65, 0.35, 0), v=1){
   obs <- function(subpop, p, a, b, c, v){
@@ -32,7 +32,7 @@ getSample <- function(n=100, p=5, a=1, b=0.3, c=0.3, pi=c(0.65, 0.35, 0), v=1){
       ts(exp(a+b*x+c*(x^2)+rnorm(p, 0, v)), start = 0, end=1, frequency = p-1)
     }
   }
-  data <- matrix(nr=n, nc=p, data=NA)
+  data <- matrix(nrow=n, ncol=p, data=NA)
   subpops <- numeric(n)
   for(i in 1:n){
     subpop <- sample(1:3, 1, prob=pi)
@@ -65,7 +65,7 @@ getSample <- function(n=100, p=5, a=1, b=0.3, c=0.3, pi=c(0.65, 0.35, 0), v=1){
 #' \item{2}{data in wide format (mostly for plotting purposes)}
 #' \item{3}{classes}
 #' }
-#' @noRd
+#' @importFrom stats rgamma
 #' @export
 getSample2 <- function(n=200, p=6, a=1, b=2, pi=c(0.5, 0.5)){
   obs2 <- function(subpop, a, b, p){
@@ -77,7 +77,7 @@ getSample2 <- function(n=200, p=6, a=1, b=2, pi=c(0.5, 0.5)){
       ts(a+b*x+rgamma(p, 2, 1), start = 1, end=p, frequency = 1)
     }
   }
-  data <- matrix(nr=n, nc=p, data=NA)
+  data <- matrix(nrow=n, ncol=p, data=NA)
   subpops <- sample(1:2, n, prob=pi, replace=T)
   for(i in 1:n){
     data[i,] <- obs2(subpops[i], a, b, p)
@@ -98,7 +98,6 @@ getSample2 <- function(n=200, p=6, a=1, b=2, pi=c(0.5, 0.5)){
 #' @param clusters clusters
 #' @details
 #' Here are the details of the function...
-#' @noRd
 #' @export
 purity <- function(classes, clusters){
   tab <- table(clusters, classes)
@@ -119,7 +118,6 @@ purity <- function(classes, clusters){
 #' @param y y
 #' @details
 #' Here are the details of the function...
-#' @noRd
 #' @export
 test.resid <- function(model, y){
   preds <- c()
@@ -142,7 +140,6 @@ test.resid <- function(model, y){
 #' @param lambda lambda
 #' @details
 #' Here are the details of the function...
-#' @noRd
 #' @export
 tran <- function(y, lambda){
   gm <- exp(mean(log(y)))

@@ -4,7 +4,7 @@
 \alias{summary.stepmixl}
 \title{summary.stepmixl}
 \usage{
-summary.stepmixl(object, ..., digits = 6)
+\method{summary}{stepmixl}(object, ..., digits = 6)
 }
 \arguments{
 \item{object}{an object of class stepmixl.}

@@ -10,12 +10,14 @@ Authors@R: c(
            comment = c(ORCID = "0000-0002-6270-2556"))
     )
 Description: Implementation of the scaled Box-Cox transformation in R.
-License: MIT + file LICENSE
+License: GPL (>= 3) + file LICENSE
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.3
-Imports: 
-    flexmix,
-    lattice
+RoxygenNote: 7.3.2
+Imports:
+   stats,
+   methods,
+   flexmix
 Depends: 
-    R (>= 2.10)
+    R (>= 3.50)
+    

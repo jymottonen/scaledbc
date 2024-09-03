@@ -4,8 +4,11 @@
 #' an object of class stepmixl.
 #'
 #' @param x an object of class stepmixl.
+#' @param ... further arguments passed to or from other methods.
 #' @details
 #' Here are the details of the function...
+#' @importFrom graphics plot points legend axis
+#' @method plot stepmixl
 #' @export
 plot.stepmixl<-function(x, ...)
 {

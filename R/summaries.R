@@ -8,6 +8,7 @@
 #' @param digits minimal number of significant digits.
 #' @details
 #' Here are the details of the function...
+#' @method summary stepmixl
 #' @export
 summary.stepmixl<-function(object, ..., digits=6)
 {
